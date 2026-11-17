@@ -31,6 +31,12 @@ export function AuthProvider({ children }) {
     user, booting, login, logout,
     is: (...roles) => !!user && (roles.includes(user.role) || user.role === 'SUPER_ADMIN'),
     isHR: !!user && HR.includes(user.role),
+<<<<<<< HEAD
+=======
+    isPlatform: !!user?.isPlatform, // platform staff (orgId "platform")
+    // has('payroll'): is this feature switched on for the organization? (older tokens without `features` count as on)
+    has: (feature) => !!user && user.features?.[feature] !== false,
+>>>>>>> recovery-master
   }), [user, booting, logout]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

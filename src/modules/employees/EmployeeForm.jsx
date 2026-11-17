@@ -5,7 +5,11 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { Button, Field, Input, Modal, Select, useToast } from '../../components/ui.jsx';
 import { ROLE_LABEL } from '../../lib/format.js';
 
+<<<<<<< HEAD
 const ROLES = ['EMPLOYEE', 'MANAGER', 'HR_MANAGER', 'HR_ADMIN', 'FINANCE', 'AUDITOR'];
+=======
+const ROLES = ['EMPLOYEE', 'PROJECT_MANAGER', 'MANAGER', 'HR_MANAGER', 'HR_ADMIN', 'FINANCE', 'AUDITOR'];
+>>>>>>> recovery-master
 
 /** Create (no `employee`) or edit. Pay, bank and role fields only render for HR admins; the API enforces it too. */
 export default function EmployeeForm({ employee, onClose, onCreated }) {

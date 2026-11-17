@@ -56,14 +56,23 @@ function TeamDay({ tz, scopeLabel }) {
 
 export default function AttendancePage() {
   const { user, is } = useAuth();
+<<<<<<< HEAD
   const canTeam = is('MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'AUDITOR');
+=======
+  const canTeam = is('MANAGER', 'PROJECT_MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'AUDITOR');
+>>>>>>> recovery-master
   const [tab, setTab] = useState('mine');
   const tz = user.timezone;
   return (
     <>
       <PageHeader title="Attendance" sub="Your check-ins, and who is in today."
+<<<<<<< HEAD
         actions={canTeam && <Tabs value={tab} onChange={setTab} tabs={[{ id: 'mine', label: 'My month' }, { id: 'team', label: user.role === 'MANAGER' ? 'My team' : 'Everyone' }]} />} />
       {tab === 'mine' ? <MyMonth tz={tz} /> : <TeamDay tz={tz} scopeLabel={user.role === 'MANAGER' ? 'My team' : 'Company'} />}
+=======
+        actions={canTeam && <Tabs value={tab} onChange={setTab} tabs={[{ id: 'mine', label: 'My month' }, { id: 'team', label: ['MANAGER', 'PROJECT_MANAGER'].includes(user.role) ? 'My team' : 'Everyone' }]} />} />
+      {tab === 'mine' ? <MyMonth tz={tz} /> : <TeamDay tz={tz} scopeLabel={['MANAGER', 'PROJECT_MANAGER'].includes(user.role) ? 'My team' : 'Company'} />}
+>>>>>>> recovery-master
     </>
   );
 }

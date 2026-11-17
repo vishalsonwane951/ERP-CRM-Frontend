@@ -4,6 +4,10 @@ import { ChevronRight } from 'lucide-react';
 import { api } from '../../api/index.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import PunchCard from '../attendance/PunchCard.jsx';
+<<<<<<< HEAD
+=======
+import TodayTasks from '../projects/TodayTasks.jsx';
+>>>>>>> recovery-master
 import AttendanceTrend from '../reports/AttendanceTrend.jsx';
 import { Avatar, Card, CardHeader, Stat } from '../../components/ui.jsx';
 import { greeting, localMinutes } from '../../lib/format.js';
@@ -48,7 +52,11 @@ function WaitingOnYou() {
 }
 
 export default function DashboardPage() {
+<<<<<<< HEAD
   const { user } = useAuth();
+=======
+  const { user, has } = useAuth();
+>>>>>>> recovery-master
   const dash = useQuery({ queryKey: ['dashboard'], queryFn: api.reports.dashboard, refetchInterval: 60_000 });
   const d = dash.data;
   const first = user.name.split(' ')[0];
@@ -66,6 +74,11 @@ export default function DashboardPage() {
         <div className="space-y-5"><WaitingOnYou /><LeaveGlance /></div>
       </div>
 
+<<<<<<< HEAD
+=======
+      {has('projects') && <div className="mt-5"><TodayTasks /></div>}
+
+>>>>>>> recovery-master
       {d && d.scope !== 'self' && (
         <div className="mt-5 grid gap-5">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

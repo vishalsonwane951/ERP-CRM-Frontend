@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+<<<<<<< HEAD
 import { LogIn, LogOut, MapPin } from 'lucide-react';
+=======
+import { Coffee, LogIn, LogOut, MapPin } from 'lucide-react';
+>>>>>>> recovery-master
 import { api } from '../../api/index.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button, useToast, cx } from '../../components/ui.jsx';
@@ -63,13 +67,37 @@ export default function PunchCard() {
     onError: (e) => toast.error(e.message),
   });
 
+<<<<<<< HEAD
   if (!q.data) return <div className="h-[330px] animate-pulse nx-hero rounded-card bg-ink/90" aria-busy />;
   const { record, shift, policy, date } = q.data;
+=======
+  const startBreak = useMutation({
+    mutationFn: api.attendance.startBreak,
+    onSuccess: () => { refresh(); toast.success('Break started.'); },
+    onError: (e) => { toast.error(e.message); refresh(); },
+  });
+  const endBreak = useMutation({
+    mutationFn: api.attendance.endBreak,
+    onSuccess: () => { refresh(); toast.success('Welcome back.'); },
+    onError: (e) => { toast.error(e.message); refresh(); },
+  });
+
+  if (!q.data) return <div className="h-[330px] animate-pulse nx-hero rounded-card bg-ink/90" aria-busy />;
+  const { record, shift, policy, date, breaksUsed, onBreak, canBreakNow, breakBlockedReason } = q.data;
+>>>>>>> recovery-master
   const t = now + offset;
   const nowMin = localMinutes(t, tz);
   const inMin = record?.checkInAt ? localMinutes(new Date(record.checkInAt).getTime(), tz) : null;
   const status = record ? ATT_STATUS[record.status] : null;
+<<<<<<< HEAD
   const live = record?.checkInAt && !record.checkOutAt ? Math.round((t - new Date(record.checkInAt).getTime()) / 60000) : null;
+=======
+  // time spent on breaks so far (an open break counts until now); it is not working time
+  const breakMin = (record?.breaks || []).reduce((sum, b) => sum + ((b.endAt ? new Date(b.endAt).getTime() : t) - new Date(b.startAt).getTime()), 0) / 60000;
+  const live = record?.checkInAt && !record.checkOutAt ? Math.max(0, Math.round((t - new Date(record.checkInAt).getTime()) / 60000 - breakMin)) : null;
+  const breaksOn = policy.maxBreaksPerDay > 0; // the numbers come from the organization's settings
+  const openBreak = onBreak ? record.breaks[record.breaks.length - 1] : null;
+>>>>>>> recovery-master
 
   return (
     <section className="nx-hero rounded-card bg-ink p-6 text-white lg:p-7" aria-label="Today's attendance">
@@ -87,6 +115,11 @@ export default function PunchCard() {
           {record && !record.checkOutAt && (<>
             <p className="text-[16px] font-medium">Checked in at {fmtTime(record.checkInAt, tz)}</p>
             <p className="mt-0.5 text-[14px] text-white/65">{status?.label}{live != null && ` · working for ${hm(live)}`}</p>
+<<<<<<< HEAD
+=======
+            {breaksOn && <p className="mt-0.5 text-[13px] text-white/65">{onBreak ? `On break since ${fmtTime(openBreak.startAt, tz)} · ` : ''}{breaksUsed} of {policy.maxBreaksPerDay} breaks used</p>}
+            {breaksOn && !onBreak && !canBreakNow && breakBlockedReason && <p className="mt-0.5 text-[12.5px] text-white/50">{breakBlockedReason}</p>}
+>>>>>>> recovery-master
           </>)}
           {record?.checkOutAt && (<>
             <p className="text-[16px] font-medium">Day complete · {hm(record.workedMinutes)}</p>
@@ -95,7 +128,17 @@ export default function PunchCard() {
           {policy.geofence && <p className="mt-1 flex items-center gap-1 text-[12.5px] text-white/50"><MapPin className="h-3.5 w-3.5" />Location is checked when you punch in</p>}
         </div>
         {!record && <Button size="lg" icon={LogIn} loading={checkIn.isPending} onClick={() => checkIn.mutate()} className="min-w-[170px] !bg-white !bg-none !text-[#5748cf] !shadow-none hover:!bg-white/90">Check in</Button>}
+<<<<<<< HEAD
         {record && !record.checkOutAt && <Button size="lg" icon={LogOut} variant="secondary" loading={checkOut.isPending} onClick={() => checkOut.mutate()} className="min-w-[170px]">Check out</Button>}
+=======
+        {record && !record.checkOutAt && (
+          <div className="flex flex-wrap items-center gap-3">
+            {onBreak && <Button size="lg" icon={Coffee} loading={endBreak.isPending} onClick={() => endBreak.mutate()} className="min-w-[150px] !bg-white !bg-none !text-[#5748cf] !shadow-none hover:!bg-white/90">End break</Button>}
+            {canBreakNow && <Button size="lg" icon={Coffee} variant="secondary" loading={startBreak.isPending} onClick={() => startBreak.mutate()} className="min-w-[150px]">Take a break</Button>}
+            <Button size="lg" icon={LogOut} variant="secondary" loading={checkOut.isPending} onClick={() => checkOut.mutate()} className="min-w-[150px]">Check out</Button>
+          </div>
+        )}
+>>>>>>> recovery-master
       </div>
     </section>
   );

@@ -3,13 +3,18 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   LayoutDashboard, CalendarCheck, Plane, Receipt, Wallet, FolderOpen, Laptop, ClipboardCheck, Users, Banknote, BarChart3,
+<<<<<<< HEAD
   Bell, LogOut, Menu, X, Moon, Sun,
+=======
+  Bell, LogOut, Menu, X, Moon, Sun, Gauge, Building2, Layers, ScrollText, LineChart, Settings, UsersRound, FolderKanban, TrendingUp, UserPlus,
+>>>>>>> recovery-master
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../api/index.js';
 import { Avatar, cx } from './ui.jsx';
 import { ROLE_LABEL, fmtDateTime } from '../lib/format.js';
 
+<<<<<<< HEAD
 const MY = [
   { to: '/', label: 'Today', icon: LayoutDashboard, end: true },
   { to: '/attendance', label: 'Attendance', icon: CalendarCheck },
@@ -24,6 +29,43 @@ const COMPANY = [
   { to: '/people', label: 'People', icon: Users, roles: ['MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'] },
   { to: '/payroll', label: 'Payroll', icon: Banknote, roles: ['HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'] },
   { to: '/reports', label: 'Reports', icon: BarChart3, roles: ['HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'] },
+=======
+// ONE plain list drives the sidebar. Edit it by hand to add, move or hide a page.
+//   section  where it is listed (the order is SECTIONS)
+//   roles    who sees it (leave out = everyone). A company SUPER_ADMIN sees everything.
+//   feature  the organization must have this switch on (platform plan / feature flags)
+//   platform true = only for platform staff (orgId "platform"); everything else is for company people
+// A page is listed once, even if two sections would both show it.
+const SECTIONS = ['My work', 'Team', 'Company', 'Finance', 'HR', 'Platform'];
+const NAV = [
+  { section: 'My work', to: '/', label: 'Today', icon: LayoutDashboard, end: true },
+  { section: 'My work', to: '/attendance', label: 'Attendance', icon: CalendarCheck },
+  { section: 'My work', to: '/leave', label: 'Leave', icon: Plane },
+  { section: 'My work', to: '/expenses', label: 'Expenses', icon: Receipt },
+  { section: 'My work', to: '/payslips', label: 'Payslips', icon: Wallet, feature: 'payroll' },
+  { section: 'My work', to: '/documents', label: 'Documents', icon: FolderOpen },
+  { section: 'My work', to: '/assets', label: 'Equipment', icon: Laptop, feature: 'assets' },
+
+  { section: 'Team', to: '/team', label: 'My team', icon: UsersRound, roles: ['MANAGER', 'PROJECT_MANAGER'], feature: 'projects' },
+  { section: 'Team', to: '/projects', label: 'Projects', icon: FolderKanban, roles: ['MANAGER', 'PROJECT_MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'AUDITOR'], feature: 'projects' },
+  { section: 'Team', to: '/performance', label: 'Performance', icon: TrendingUp, roles: ['MANAGER', 'PROJECT_MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'AUDITOR'] },
+
+  { section: 'Company', to: '/approvals', label: 'Approvals', icon: ClipboardCheck, roles: ['MANAGER', 'PROJECT_MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'], badge: true },
+  { section: 'Company', to: '/people', label: 'People', icon: Users, roles: ['MANAGER', 'PROJECT_MANAGER', 'HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'] },
+  { section: 'Company', to: '/reports', label: 'Reports', icon: BarChart3, roles: ['HR_ADMIN', 'HR_MANAGER', 'FINANCE', 'AUDITOR'], feature: 'reports' },
+
+  { section: 'Finance', to: '/payroll', label: 'Payroll', icon: Banknote, roles: ['FINANCE', 'AUDITOR'], feature: 'payroll' },
+
+  { section: 'HR', to: '/payroll', label: 'Payroll', icon: Banknote, roles: ['HR_ADMIN', 'HR_MANAGER'], feature: 'payroll' },
+  { section: 'HR', to: '/onboarding', label: 'Onboarding', icon: UserPlus, roles: ['HR_ADMIN', 'HR_MANAGER'], feature: 'onboarding' },
+  { section: 'HR', to: '/settings', label: 'Settings', icon: Settings, roles: ['HR_ADMIN'] },
+
+  { section: 'Platform', platform: true, to: '/platform', label: 'Overview', icon: Gauge, roles: ['SUPER_ADMIN'], end: true },
+  { section: 'Platform', platform: true, to: '/platform/orgs', label: 'Organizations', icon: Building2, roles: ['SUPER_ADMIN', 'SALES'] },
+  { section: 'Platform', platform: true, to: '/platform/plans', label: 'Plans', icon: Layers, roles: ['SUPER_ADMIN', 'SALES', 'FINANCE'] },
+  { section: 'Platform', platform: true, to: '/platform/reports', label: 'Revenue', icon: LineChart, roles: ['SUPER_ADMIN', 'FINANCE'] },
+  { section: 'Platform', platform: true, to: '/platform/audit', label: 'Audit logs', icon: ScrollText, roles: ['SUPER_ADMIN'] },
+>>>>>>> recovery-master
 ];
 
 function useTheme() {
@@ -88,11 +130,24 @@ function Notifications() {
 }
 
 export default function Layout() {
+<<<<<<< HEAD
   const { user, logout, is } = useAuth();
   const [drawer, setDrawer] = useState(false);
   const [theme, toggleTheme] = useTheme();
   const pending = useQuery({ queryKey: ['approvals-pending'], queryFn: api.approvals.pending, refetchInterval: 60_000 });
   const company = COMPANY.filter((i) => is(...i.roles));
+=======
+  const { user, logout, is, has, isPlatform } = useAuth();
+  const [drawer, setDrawer] = useState(false);
+  const [theme, toggleTheme] = useTheme();
+  const pending = useQuery({ queryKey: ['approvals-pending'], queryFn: api.approvals.pending, refetchInterval: 60_000, enabled: !isPlatform });
+  // role AND organization feature AND the right side (platform staff or company people)
+  const visible = (i) => !!i.platform === isPlatform && (!i.roles || is(...i.roles)) && (!i.feature || has(i.feature));
+  const seen = new Set();
+  const sections = SECTIONS
+    .map((name) => ({ name, items: NAV.filter((i) => i.section === name && visible(i) && !seen.has(i.to) && seen.add(i.to)) }))
+    .filter((s) => s.items.length);
+>>>>>>> recovery-master
 
   const nav = (
     <>
@@ -103,8 +158,17 @@ export default function Layout() {
         <div><p className="text-[17px] font-extrabold leading-none text-ink">Muster</p><p className="mt-1 text-[12px] text-mute">{user.orgName}</p></div>
       </div>
       <nav className="flex-1 space-y-6 overflow-y-auto" aria-label="Main">
+<<<<<<< HEAD
         <div className="space-y-0.5"><p className="px-3 pb-1.5 text-[11.5px] font-semibold uppercase tracking-wide text-mute/80">My work</p>{MY.map((i) => <NavItem key={i.to} item={i} onNavigate={() => setDrawer(false)} />)}</div>
         {company.length > 0 && <div className="space-y-0.5"><p className="px-3 pb-1.5 text-[11.5px] font-semibold uppercase tracking-wide text-mute/80">Company</p>{company.map((i) => <NavItem key={i.to} item={i} count={pending.data?.length} onNavigate={() => setDrawer(false)} />)}</div>}
+=======
+        {sections.map((s) => (
+          <div key={s.name} className="space-y-0.5">
+            <p className="px-3 pb-1.5 text-[11.5px] font-semibold uppercase tracking-wide text-mute/80">{s.name}</p>
+            {s.items.map((i) => <NavItem key={i.to} item={i} count={pending.data?.length} onNavigate={() => setDrawer(false)} />)}
+          </div>
+        ))}
+>>>>>>> recovery-master
       </nav>
       <div className="mt-4 flex items-center gap-3 rounded-ctl border border-line bg-paper p-3">
         <Avatar name={user.name} size={36} />

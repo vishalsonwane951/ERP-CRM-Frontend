@@ -16,7 +16,11 @@ export default function EmployeesPage() {
   const dept = (id) => depts.data?.find((d) => d.deptId === id)?.name || '–';
   return (
     <>
+<<<<<<< HEAD
       <PageHeader title="People" sub={user.role === 'MANAGER' ? 'The people who report to you.' : `${list.data?.length ?? ''} people in ${user.orgName}`}
+=======
+      <PageHeader title="People" sub={['MANAGER', 'PROJECT_MANAGER'].includes(user.role) ? 'The people in your team.' : `${list.data?.length ?? ''} people in ${user.orgName}`}
+>>>>>>> recovery-master
         actions={isHR && <Button icon={Plus} onClick={() => setAdding(true)}>Add person</Button>} />
       <Card>
         <div className="border-b border-line p-4"><div className="relative max-w-sm"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mute" /><Input className="input !pl-9" placeholder="Search by name, email or title" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search people" /></div></div>

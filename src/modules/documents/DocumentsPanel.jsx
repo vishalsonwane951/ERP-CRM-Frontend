@@ -5,7 +5,11 @@ import { api } from '../../api/index.js';
 import { Badge, Button, Empty, ErrorNote, Select, Spinner, useToast } from '../../components/ui.jsx';
 import { fmtDate } from '../../lib/format.js';
 
+<<<<<<< HEAD
 const CATS = { identity: 'Identity', bank: 'Bank', 'offer-letters': 'Offer letters', payslips: 'Payslips', certificates: 'Certificates', contracts: 'Contracts', assets: 'Assets' };
+=======
+const CATS = { identity: 'Identity', bank: 'Bank', 'offer-letters': 'Offer letters', payslips: 'Payslips', certificates: 'Certificates', contracts: 'Contracts', assets: 'Assets', 'expense-bills': 'Expense bills' };
+>>>>>>> recovery-master
 const kb = (n) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
 
 /** Upload = presigned PUT straight to S3, then confirm. Bytes never pass through Express (v3 §6.2). */

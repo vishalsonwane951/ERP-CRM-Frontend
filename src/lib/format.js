@@ -20,8 +20,13 @@ export const greeting = (min) => (min < 12 * 60 ? 'Good morning' : min < 17 * 60
 export const hhmmLabel = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`; };
 
 export const ROLE_LABEL = {
+<<<<<<< HEAD
   SUPER_ADMIN: 'Super admin', HR_ADMIN: 'HR admin', HR_MANAGER: 'HR manager', MANAGER: 'Manager',
   FINANCE: 'Finance', AUDITOR: 'Auditor', EMPLOYEE: 'Employee',
+=======
+  SUPER_ADMIN: 'Super admin', HR_ADMIN: 'HR admin', HR_MANAGER: 'HR manager', MANAGER: 'Manager', PROJECT_MANAGER: 'Project manager',
+  FINANCE: 'Finance', AUDITOR: 'Auditor', EMPLOYEE: 'Employee', SALES: 'Sales',
+>>>>>>> recovery-master
 };
 export const ATT_STATUS = {
   PRESENT: { label: 'On time', tone: 'moss' }, LATE: { label: 'Late', tone: 'saffron' }, HALF_DAY: { label: 'Half day', tone: 'saffron' },

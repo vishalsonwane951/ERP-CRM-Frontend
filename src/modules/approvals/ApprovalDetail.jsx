@@ -4,6 +4,10 @@ import { ArrowUpRight, Check, X } from 'lucide-react';
 import { api } from '../../api/index.js';
 import { Avatar, Button, ErrorNote, Field, Spinner, StatusBadge, Textarea, useToast, cx } from '../../components/ui.jsx';
 import { REQ_STATUS, ROLE_LABEL, fmtDateTime } from '../../lib/format.js';
+<<<<<<< HEAD
+=======
+import ViewBill from '../expenses/ViewBill.jsx';
+>>>>>>> recovery-master
 
 const stageLabel = (s) => (s.approverType === 'REPORTING_MANAGER' ? 'Manager' : ROLE_LABEL[s.role] || s.role);
 const VERB = { approve: 'Approved', reject: 'Rejected', escalate: 'Escalated', cancel: 'Cancelled' };
@@ -40,6 +44,11 @@ export default function ApprovalDetail({ reqId, onChanged }) {
         <StatusBadge map={REQ_STATUS} value={a.status} />
       </div>
 
+<<<<<<< HEAD
+=======
+      {a.payload?.billDocumentId && <div className="rounded-ctl border border-line px-4 py-3"><p className="mb-1 text-[12.5px] text-mute">Attached bill</p><ViewBill documentId={a.payload.billDocumentId} ownerId={a.requesterId} label={a.payload.billFilename || 'View bill'} /></div>}
+
+>>>>>>> recovery-master
       {a.payload?.reason && <p className="rounded-ctl bg-paper px-4 py-3 text-[14px] text-ink-700">“{a.payload.reason}”</p>}
 
       <ol className="flex items-stretch gap-2" aria-label="Approval stages">
@@ -50,7 +59,12 @@ export default function ApprovalDetail({ reqId, onChanged }) {
             <li key={n} className={cx('flex-1 rounded-ctl border px-3 py-2.5', state === 'done' && 'border-moss-100 bg-moss-50', state === 'now' && 'border-saffron-500 bg-saffron-50', state === 'rejected' && 'border-lotus-100 bg-lotus-50', state === 'later' && 'border-line')}>
               <p className="text-[12.5px] text-mute">Stage {n}</p>
               <p className="text-[14px] font-semibold">{stageLabel(s)}</p>
+<<<<<<< HEAD
               <p className="text-[12.5px] text-mute">{state === 'done' ? 'Approved' : state === 'now' ? (a.approver?.kind === 'USER' ? a.approver.label : 'Waiting') : state === 'rejected' ? 'Rejected' : 'Not yet'}</p>
+=======
+              <p className="text-[12.5px] text-mute">{state === 'done' ? 'Approved' : state === 'now' ? (a.approver?.kind === 'USER' ? a.approver.label : 'Waiting') : state === 'rejected' ? 'Rejected' : 'Not yet'}{s.decision && ` by ${s.decision.actorName}`}</p>
+              {s.decision?.comment && <p className="mt-1 text-[12.5px] italic text-ink-700">“{s.decision.comment}”</p>}
+>>>>>>> recovery-master
             </li>
           );
         })}
